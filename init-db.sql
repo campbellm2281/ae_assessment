@@ -25,6 +25,30 @@ VALUES
 INSERT INTO accounts
     (account_number, name, amount, type, credit_limit)
 VALUES
-    (3, 'Jills Credit', -3000, 'credit', 10000),
+    (3, 'Jills Credit', -3000, 'credit', 3500),
     (6, 'Bills Credit', -60000, 'credit', 60000),
     (9, 'Nancy Credit', -90000, 'credit', 100000);
+
+DROP TABLE IF EXISTS transaction_history;
+CREATE TABLE transaction_history (
+    id INTEGER PRIMARY KEY,
+    account_number INTEGER NOT NULL,
+    amount INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    transaction_time TEXT NOT NULL,
+    CONSTRAINT fk_account_number
+        FOREIGN KEY (account_number)
+        REFERENCES accounts (account_number)
+);
+
+ALTER TABLE transaction_history ADD CONSTRAINT verify_type
+CHECK (type IN ('deposit', 'withdrawal'));
+
+ALTER TABLE transaction_history ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME id_seq
+    START WITH 0
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1
+);

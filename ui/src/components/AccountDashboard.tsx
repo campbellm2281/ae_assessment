@@ -23,13 +23,16 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
     }
     const response = await fetch(`http://localhost:3000/transactions/${account.accountNumber}/deposit`, requestOptions);
     const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
     setAccount({
       accountNumber: data.account_number,
       name: data.name,
       amount: data.amount,
       type: data.type,
       creditLimit: data.credit_limit
-    });
+    });}
   }
 
   const withdrawFunds = async () => {
@@ -40,13 +43,17 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
     }
     const response = await fetch(`http://localhost:3000/transactions/${account.accountNumber}/withdraw`, requestOptions);
     const data = await response.json();
-    setAccount({
+    if (data.error) {
+      alert(data.error);
+    } else {
+      setAccount({
       accountNumber: data.account_number,
       name: data.name,
       amount: data.amount,
       type: data.type,
       creditLimit: data.credit_limit
     });
+    }
   }
 
   return (
